@@ -1,4 +1,6 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
+
+import net.jcip.examples.case8.MyAppThread;
 
 import java.util.concurrent.*;
 
@@ -16,6 +18,7 @@ public class MyThreadFactory implements ThreadFactory {
         this.poolName = poolName;
     }
 
+    @Override
     public Thread newThread(Runnable runnable) {
         return new MyAppThread(runnable, poolName);
     }

@@ -1,4 +1,6 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
+
+import net.jcip.examples.ValueLatch;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -51,15 +53,18 @@ public class ConcurrentPuzzleSolver <P, M> {
             super(pos, move, prev);
         }
 
+        @Override
         public void run() {
-            if (solution.isSet()
-                    || seen.putIfAbsent(pos, true) != null)
+            if (solution.isSet() || seen.putIfAbsent(pos, true) != null) {
                 return; // already solved or seen this position
-            if (puzzle.isGoal(pos))
+            }
+            if (puzzle.isGoal(pos)) {
                 solution.setValue(this);
-            else
-                for (M m : puzzle.legalMoves(pos))
+            } else {
+                for (M m : puzzle.legalMoves(pos)) {
                     exec.execute(newTask(puzzle.move(pos, m), m, this));
+                }
+            }
         }
     }
 }

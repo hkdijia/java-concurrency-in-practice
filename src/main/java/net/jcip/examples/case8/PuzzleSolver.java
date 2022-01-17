@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
 
 import java.util.concurrent.atomic.*;
 
@@ -16,6 +16,7 @@ public class PuzzleSolver <P,M> extends ConcurrentPuzzleSolver<P, M> {
 
     private final AtomicInteger taskCount = new AtomicInteger(0);
 
+    @Override
     protected Runnable newTask(P p, M m, PuzzleNode<P, M> n) {
         return new CountingSolverTask(p, m, n);
     }
@@ -26,12 +27,14 @@ public class PuzzleSolver <P,M> extends ConcurrentPuzzleSolver<P, M> {
             taskCount.incrementAndGet();
         }
 
+        @Override
         public void run() {
             try {
                 super.run();
             } finally {
-                if (taskCount.decrementAndGet() == 0)
+                if (taskCount.decrementAndGet() == 0) {
                     solution.setValue(null);
+                }
             }
         }
     }

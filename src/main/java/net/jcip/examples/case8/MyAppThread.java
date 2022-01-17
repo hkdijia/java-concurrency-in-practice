@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
 
 import java.util.concurrent.atomic.*;
 import java.util.logging.*;
@@ -24,24 +24,28 @@ public class MyAppThread extends Thread {
     public MyAppThread(Runnable runnable, String name) {
         super(runnable, name + "-" + created.incrementAndGet());
         setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t,
-                                          Throwable e) {
-                log.log(Level.SEVERE,
-                        "UNCAUGHT in thread " + t.getName(), e);
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                log.log(Level.SEVERE, "UNCAUGHT in thread " + t.getName(), e);
             }
         });
     }
 
+    @Override
     public void run() {
         // Copy debug flag to ensure consistent value throughout.
         boolean debug = debugLifecycle;
-        if (debug) log.log(Level.FINE, "Created " + getName());
+        if (debug) {
+            log.log(Level.FINE, "Created " + getName());
+        }
         try {
             alive.incrementAndGet();
             super.run();
         } finally {
             alive.decrementAndGet();
-            if (debug) log.log(Level.FINE, "Exiting " + getName());
+            if (debug) {
+                log.log(Level.FINE, "Exiting " + getName());
+            }
         }
     }
 

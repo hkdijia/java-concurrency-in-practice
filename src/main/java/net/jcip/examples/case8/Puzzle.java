@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
 
 import java.util.*;
 

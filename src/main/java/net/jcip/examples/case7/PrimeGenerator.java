@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case7;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.math.BigInteger;
@@ -18,8 +18,9 @@ import net.jcip.annotations.*;
 public class PrimeGenerator implements Runnable {
     private static ExecutorService exec = Executors.newCachedThreadPool();
 
-    @GuardedBy("this") private final List<BigInteger> primes
-            = new ArrayList<BigInteger>();
+    @GuardedBy("this")
+    private final List<BigInteger> primes = new ArrayList<BigInteger>();
+
     private volatile boolean cancelled;
 
     public void run() {

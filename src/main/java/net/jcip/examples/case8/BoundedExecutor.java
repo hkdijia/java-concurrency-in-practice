@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
 
 import java.util.concurrent.*;
 
@@ -21,11 +21,11 @@ public class BoundedExecutor {
         this.semaphore = new Semaphore(bound);
     }
 
-    public void submitTask(final Runnable command)
-            throws InterruptedException {
+    public void submitTask(final Runnable command) throws InterruptedException {
         semaphore.acquire();
         try {
             exec.execute(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         command.run();

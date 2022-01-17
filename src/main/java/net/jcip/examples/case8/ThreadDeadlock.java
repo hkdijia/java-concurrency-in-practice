@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case8;
 
 import java.util.concurrent.*;
 
@@ -12,6 +12,20 @@ import java.util.concurrent.*;
 public class ThreadDeadlock {
     ExecutorService exec = Executors.newSingleThreadExecutor();
 
+    RenderPageTask renderPageTask = new RenderPageTask();
+
+    public RenderPageTask getRenderPageTask() {
+        return renderPageTask;
+    }
+
+    public void setRenderPageTask(RenderPageTask renderPageTask) {
+        this.renderPageTask = renderPageTask;
+    }
+
+    public ThreadDeadlock() throws Exception {
+        //String call = new RenderPageTask().call();
+    }
+
     public class LoadFileTask implements Callable<String> {
         private final String fileName;
 
@@ -19,6 +33,7 @@ public class ThreadDeadlock {
             this.fileName = fileName;
         }
 
+        @Override
         public String call() throws Exception {
             // Here's where we would actually read the file
             return "";
@@ -26,6 +41,7 @@ public class ThreadDeadlock {
     }
 
     public class RenderPageTask implements Callable<String> {
+        @Override
         public String call() throws Exception {
             Future<String> header, footer;
             header = exec.submit(new LoadFileTask("header.html"));
@@ -39,5 +55,13 @@ public class ThreadDeadlock {
             // Here's where we would actually render the page
             return "";
         }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ThreadDeadlock threadDeadlock = new ThreadDeadlock();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<String> submit = executor.submit(threadDeadlock.getRenderPageTask());
+        String s = submit.get();
+        System.out.println("开始输出："+s);
     }
 }

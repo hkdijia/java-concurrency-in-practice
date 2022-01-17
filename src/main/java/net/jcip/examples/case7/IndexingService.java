@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case7;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,6 +24,7 @@ public class IndexingService {
         this.root = root;
         this.queue = new LinkedBlockingQueue<File>(CAPACITY);
         this.fileFilter = new FileFilter() {
+            @Override
             public boolean accept(File f) {
                 return f.isDirectory() || fileFilter.accept(f);
             }
@@ -35,6 +36,7 @@ public class IndexingService {
     }
 
     class CrawlerThread extends Thread {
+        @Override
         public void run() {
             try {
                 crawl(root);
@@ -64,6 +66,7 @@ public class IndexingService {
     }
 
     class IndexerThread extends Thread {
+        @Override
         public void run() {
             try {
                 while (true) {

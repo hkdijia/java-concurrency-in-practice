@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case7;
 
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -47,6 +47,7 @@ public class LogService {
     }
 
     private class LoggerThread extends Thread {
+        @Override
         public void run() {
             try {
                 while (true) {

@@ -1,4 +1,4 @@
-package net.jcip.examples;
+package net.jcip.examples.case6;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -20,8 +20,7 @@ public abstract class Renderer {
 
     void renderPage(CharSequence source) {
         final List<ImageInfo> info = scanForImageInfo(source);
-        CompletionService<ImageData> completionService =
-                new ExecutorCompletionService<ImageData>(executor);
+        CompletionService<ImageData> completionService = new ExecutorCompletionService<ImageData>(executor);
         for (final ImageInfo imageInfo : info)
             completionService.submit(new Callable<ImageData>() {
                 public ImageData call() {
